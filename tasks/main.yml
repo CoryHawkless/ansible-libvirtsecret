@@ -1,0 +1,26 @@
+- name: Check if libvirt RBD secret set
+  command: virsh secret-get-value {{ openstack_rbd_secret_uuid }}
+  register: virsh_secret_result
+  changed_when: false
+  failed_when: false
+  tags: libvirt-secret
+
+- name: Generate libvirt RBD secret definition
+  template:
+    src: templates/rbd_secret.xml.j2
+    dest: /tmp/secret.xml
+#  when: virsh_secret_result.rc != 0
+  ignore_errors: yes
+  tags: libvirt-secret
+
+- name: Define libvirt RBD secret
+  command: virsh secret-define /tmp/secret.xml
+#  when: virsh_secret_result.rc != 0
+  ignore_errors: yes
+  tags: libvirt-secret
+
+- name: Set libvirt RBD secret
+  command: virsh secret-set-value {{ openstack_rbd_secret_uuid }} {{ openstack_rbd_secret_key }}
+#  when: virsh_secret_result.rc != 0
+  ignore_errors: yes
+  tags: libvirt-secret
