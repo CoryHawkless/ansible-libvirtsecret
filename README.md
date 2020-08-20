@@ -3,8 +3,8 @@ This is intended to be used an an Ansible role
 Used to deploy libvirt secret for allowing libvirt to connect to ceph
 
 Required vars
-openstack_rbd_secret_uuid
-openstack_rbd_secret_key
+rbd_secret_uuid
+rbd_secret_key
 
 Example to create ceph creds:
 ceph auth get-or-create client.openstack -o ceph.client.openstack.keyring
